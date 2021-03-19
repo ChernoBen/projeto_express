@@ -1,13 +1,40 @@
+const { response } = require("express");
 var User = require("../models/User")
 class UserController{
-    async index(req,res){}
+
+    async index(req,res){
+
+        await User.findAll().then(response=>{
+            
+            return res.json({users:response})
+            
+        }).catch(err=>{
+
+            return res.status(400).json({err:err})
+        })
+        
+        
+    }
+
+    async findUser(req,res){
+
+        var id = req.params.id
+
+        await User.findById(id).then(rs=>{
+            
+            return res.json({response:rs}) 
+
+        }).catch(err=>{
+
+            return res.status(400).json({error:err})
+        })
+    }
+
 
     async create(req,res){
  
         //detruturing
         var {email,name,password} = req.body;
-        
-        
         
 
         if(email == undefined){
