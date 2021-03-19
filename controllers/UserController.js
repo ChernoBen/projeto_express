@@ -1,5 +1,7 @@
 const { response } = require("express");
-var User = require("../models/User")
+const User = require("../models/User");
+const PasswordToken = require('../models/PasswordToken');
+
 class UserController {
 
     async index(req, res) {
@@ -98,6 +100,21 @@ class UserController {
         })
     }
 
+    async recoverPassword(req, res) {
+
+        let email = req.body.email;
+
+        await PasswordToken.create(email).then(rs => {
+
+            console.log("------->",rs,"<-------------")
+            return res.json({ response: rs})
+
+
+        }).catch(err => {
+
+            return res.status(400).json({ error: "Falha ao obter token" })
+        })
+    }
 }
 
 module.exports = new UserController();

@@ -1,7 +1,5 @@
-var knex = require("../database/connection")
-var bcrypt = require("bcrypt")
-const { response } = require("express")
-
+const knex = require("../database/connection")
+const bcrypt = require("bcrypt")
 class User {
 
     async findAll() {
@@ -22,6 +20,24 @@ class User {
         })
 
         return result
+    }
+
+    async findByEmail(email) {
+
+        let result = await knex.select(["idusers", "email", "role", "name"]).from("users").where({ email: email }).catch(err => {
+
+            return undefined
+        })
+
+        if (result.length > 0){
+
+            return result[0]
+            
+        }else{
+
+            return undefined
+        }
+
     }
 
     async new(email, password, name) {
