@@ -7,6 +7,9 @@ class UserController{
         //detruturing
         var {email,name,password} = req.body;
         
+        
+        
+
         if(email == undefined){
 
             return res.status(400).json({error:"Email undefined"})
@@ -18,6 +21,16 @@ class UserController{
         }else if(password==undefined){
 
             return res.status(400).json({error:"Password undefined"})
+        }
+
+        var email_exists = await User.findEmail(email).catch(err=>{
+            
+            console.log(err)
+        })
+
+        if (email_exists){
+
+            return res.status(406).json({error:"Email já existe"})
         }
 
         await User.new(email,password,name).then(response=>{
