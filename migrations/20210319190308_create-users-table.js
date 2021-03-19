@@ -1,6 +1,6 @@
 
-exports.up = function (knex, Promise) {
-    return knex.apiusers.createTable('users', (table) => {
+exports.up = function (knex) {
+    return knex.apiusers.createTable('users', function(table) {
         table.increments('idusers').primary();
         table.string('name', 50).notNullable();;
         table.string('email', 50).notNullable();;
@@ -10,6 +10,6 @@ exports.up = function (knex, Promise) {
 
 };
 
-exports.down = function (knex,Promise) {
+exports.down = function (knex) {
     return knex.apiusers.dropTable('users');
 };
