@@ -85,6 +85,20 @@ class UserController {
         })
     }
 
+    async remove(req,res){
+
+        let id = req.params.id
+
+        await User.delete(id).then(response=>{
+            
+            return res.json({message:"Usuario removido com sucesso!"})
+        
+        }).catch(err=>{
+            
+            return res.status(400).json({error:"Falha ao deletar usuario!"})
+        })
+    }
+
 }
 
 module.exports = new UserController();
