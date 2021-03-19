@@ -1,8 +1,10 @@
 var knex = require("../database/connection")
 var bcrypt = require("bcrypt")
+const { response } = require("express")
 
 
 class User {
+
 
     async findAll() {
 
@@ -57,6 +59,72 @@ class User {
 
     }
 
+    async update(id,email,name,role){
+
+        await this.findById(id).then(async rs=>{
+
+            var edit_user = {}
+            if (rs[0]){
+
+                if (email != undefined){
+
+                    if(email != rs.email){
+
+                        let result = await this.findEmail(email)
+
+                        if (!result){
+
+                            edit_user.email = email
+
+                        }else{
+
+                            return {status:false, err:"email já existe"}
+                        }
+
+                    }
+
+                }
+                
+                if (name != undefined){
+
+                    if (name != rs.name){
+
+                        edit_user.name = name
+                        
+                    }else{
+
+                        return {status:false, err:"nome já existe"}
+                    }
+                }
+
+                if (role !=undefined){
+
+                    if(role != rs.role){
+
+                        edit_user.role = role
+
+                    }else{
+
+                        return {status:false, err:"role já setado"}
+                    }
+                }
+
+                await knex.update(edit_user).where({idusers:id}).table("users").then(response=>{
+
+                    return {status:true}
+                    
+                }).catch(err=>{
+                    
+                    return {status:false, err:err}
+                })
+
+            }else{
+
+                return {status:false,err:"usuario não existe"}
+            }
+        })
+        
+    }
 }
 
 module.exports = new User()

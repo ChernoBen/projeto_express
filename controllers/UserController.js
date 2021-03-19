@@ -21,7 +21,7 @@ class UserController{
         var id = req.params.id
 
         await User.findById(id).then(rs=>{
-            
+            console.log(rs)
             return res.json({response:rs}) 
 
         }).catch(err=>{
@@ -72,9 +72,32 @@ class UserController{
         })
 
         
-        //res.send("Pegando corpo da requisição!")
-
+        //res.send("Pegando corpo da requisição!"
     }
+
+    async edit(req,res){
+
+        var {id,name,role,email} = req.body
+
+        await User.update(id,email,name,role).then(response=>{
+            
+            console.log(response)
+            if (response.status){
+
+                return res.json({response:response})
+
+            }else{
+
+                return res.status(400).json({error:reponse})
+
+            }
+            
+        }).catch(err=>{
+            
+            return res.status(400).json({error:err})
+        })
+    }
+
 }
 
 
