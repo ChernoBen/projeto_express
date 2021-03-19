@@ -1,8 +1,9 @@
+var User = require("../models/User")
 class UserController{
     async index(req,res){}
 
     async create(req,res){
-        console.log(req.body)
+ 
         //detruturing
         var {email,name,password} = req.body;
         
@@ -19,7 +20,18 @@ class UserController{
             return res.status(400).json({error:"Password undefined"})
         }
 
-        return res.json({response:req.body})
+        await User.new(email,password,name).then(response=>{
+            
+            //console.log(res)
+            return res.json({message:"Usuario cadastrado com sucesso"})
+
+        }).catch(err=>{
+
+            console.log(err)
+            return res.status(400).json({err:err})
+        })
+
+        
         //res.send("Pegando corpo da requisição!")
 
     }
