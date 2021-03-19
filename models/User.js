@@ -2,9 +2,7 @@ var knex = require("../database/connection")
 var bcrypt = require("bcrypt")
 const { response } = require("express")
 
-
 class User {
-
 
     async findAll() {
 
@@ -76,7 +74,7 @@ class User {
 
                             edit_user.email = email
 
-                        }else{
+                        } else {
 
                             return {status:false, err:"email já existe"}
                         }
@@ -91,7 +89,7 @@ class User {
 
                         edit_user.name = name
                         
-                    }else{
+                    } else {
 
                         return {status:false, err:"nome já existe"}
                     }
@@ -99,11 +97,11 @@ class User {
 
                 if (role !=undefined){
 
-                    if(role != rs.role){
+                    if (role != rs.role){
 
                         edit_user.role = role
 
-                    }else{
+                    } else {
 
                         return {status:false, err:"role já setado"}
                     }
@@ -114,11 +112,11 @@ class User {
                     return {status:true}
 
                 }).catch(err=>{
-                    console.log(err)
+
                     return {status:false, err:err}
                 })
 
-            }else{
+            } else {
 
                 return {status:false,err:"usuario não existe"}
             }

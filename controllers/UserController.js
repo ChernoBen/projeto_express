@@ -21,7 +21,7 @@ class UserController {
         var id = req.params.id
 
         await User.findById(id).then(rs => {
-            console.log(rs)
+
             return res.json({ response: rs })
 
         }).catch(err => {
@@ -30,12 +30,10 @@ class UserController {
         })
     }
 
-
     async create(req, res) {
 
         //detruturing
         var { email, name, password } = req.body;
-
 
         if (email == undefined) {
 
@@ -71,8 +69,6 @@ class UserController {
             return res.status(400).json({ err: err })
         })
 
-
-        //res.send("Pegando corpo da requisição!"
     }
 
     async edit(req, res) {
@@ -90,6 +86,5 @@ class UserController {
     }
 
 }
-
 
 module.exports = new UserController();
