@@ -6,17 +6,17 @@ class User {
 
     async findAll() {
 
-        let result = await knex.select(["idusers","email","role","name"]).table("users").catch(err => {
+        let result = await knex.select(["idusers", "email", "role", "name"]).table("users").catch(err => {
 
             return []
         })
 
         return result
     }
-    
-    async findById(id){
 
-        let result = await knex.select(["idusers","email","role","name"]).from("users").where({idusers:id}).catch(err => {
+    async findById(id) {
+
+        let result = await knex.select(["idusers", "email", "role", "name"]).from("users").where({ idusers: id }).catch(err => {
 
             return []
         })
@@ -57,90 +57,90 @@ class User {
 
     }
 
-    async update(id,email,name,role){
+    async update(id, email, name, role) {
 
-        await this.findById(id).then(async rs=>{
+        await this.findById(id).then(async rs => {
 
             var edit_user = {}
-            if (rs[0]){
+            if (rs[0]) {
 
-                if (email != undefined){
+                if (email != undefined) {
 
-                    if(email != rs.email){
+                    if (email != rs.email) {
 
                         let result = await this.findEmail(email)
 
-                        if (!result){
+                        if (!result) {
 
                             edit_user.email = email
 
                         } else {
 
-                            return {status:false, err:"email já existe"}
+                            return { status: false, err: "email já existe" }
                         }
 
                     }
 
                 }
-                
-                if (name != undefined){
 
-                    if (name != rs.name){
+                if (name != undefined) {
+
+                    if (name != rs.name) {
 
                         edit_user.name = name
-                        
+
                     } else {
 
-                        return {status:false, err:"nome já existe"}
+                        return { status: false, err: "nome já existe" }
                     }
                 }
 
-                if (role !=undefined){
+                if (role != undefined) {
 
-                    if (role != rs.role){
+                    if (role != rs.role) {
 
                         edit_user.role = role
 
                     } else {
 
-                        return {status:false, err:"role já setado"}
+                        return { status: false, err: "role já setado" }
                     }
                 }
 
-                await knex.update(edit_user).where({idusers:id}).table("users").then(response=>{
+                await knex.update(edit_user).where({ idusers: id }).table("users").then(response => {
 
-                    return {status:true}
+                    return { status: true }
 
-                }).catch(err=>{
+                }).catch(err => {
 
-                    return {status:false, err:err}
+                    return { status: false, err: err }
                 })
 
             } else {
 
-                return {status:false,err:"usuario não existe"}
+                return { status: false, err: "usuario não existe" }
             }
         })
-        
+
     }
 
-    async delete(id){
-        
-        await this.findById(id).then(async rs=>{
-            
-            if (rs == undefined ){
+    async delete(id) {
 
-                return {status:false,error:"Usuario não existe"}
+        await this.findById(id).then(async rs => {
 
-            }else{
+            if (rs == undefined) {
 
-                await knex.delete().from("users").where({idusers:id}).then(response=>{
+                return { status: false, error: "Usuario não existe" }
 
-                    return {status:true,response:"user deletado com sucesso!"}
+            } else {
 
-                }).catch(error=>{
-                    
-                    return {status:false,error:"falha ao deletar usuario!"}
+                await knex.delete().from("users").where({ idusers: id }).then(response => {
+
+                    return { status: true, response: "user deletado com sucesso!" }
+
+                }).catch(error => {
+
+                    return { status: false, error: "falha ao deletar usuario!" }
                 })
 
             }

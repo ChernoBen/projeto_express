@@ -13,7 +13,6 @@ class UserController {
             return res.status(400).json({ err: err })
         })
 
-
     }
 
     async findUser(req, res) {
@@ -85,17 +84,17 @@ class UserController {
         })
     }
 
-    async remove(req,res){
+    async remove(req, res) {
 
         let id = req.params.id
 
-        await User.delete(id).then(response=>{
-            
-            return res.json({message:"Usuario removido com sucesso!"})
-        
-        }).catch(err=>{
-            
-            return res.status(400).json({error:"Falha ao deletar usuario!"})
+        await User.delete(id).then(response => {
+
+            return res.json({ message: "Usuario removido com sucesso!" })
+
+        }).catch(err => {
+
+            return res.status(400).json({ error: "Falha ao deletar usuario!" })
         })
     }
 
