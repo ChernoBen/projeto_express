@@ -112,9 +112,9 @@ class User {
                 await knex.update(edit_user).where({idusers:id}).table("users").then(response=>{
 
                     return {status:true}
-                    
+
                 }).catch(err=>{
-                    
+                    console.log(err)
                     return {status:false, err:err}
                 })
 
