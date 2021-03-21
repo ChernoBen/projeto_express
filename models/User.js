@@ -1,5 +1,6 @@
 const knex = require("../database/connection")
 const bcrypt = require("bcrypt")
+const PasswordToken = require("./PasswordToken")
 class User {
 
     async findAll() {
@@ -161,6 +162,17 @@ class User {
 
             }
         })
+    }
+
+    async changePassword(password,id,token){
+
+        var hash = await bcrypt.hash(password, 10).catch(error => {
+
+            console.log(error)
+        });
+
+        await knex.update({password:hash}).where({idusers:id}).table("users")
+
     }
 }
 

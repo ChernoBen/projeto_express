@@ -115,6 +115,25 @@ class UserController {
             return res.status(400).json({ error: "Falha ao obter token" })
         })
     }
+
+    async changePassword(req,res){
+
+        var token = req.body.token
+        var password = req.body.password
+        var isTokenValid = await PasswordToken.validade(token)
+
+        if (isTokenValid.status){
+
+            await User.changePassword(password,isTokenValid.user_id,isTokenValid.token)
+            return res.json({message:"senha alterada"})
+
+        } else {
+
+            return res.status(406).json({error:"token inválido"})
+        }
+
+
+    }
 }
 
 module.exports = new UserController();

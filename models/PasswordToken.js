@@ -36,6 +36,35 @@ class PasswordToken{
         }
 
     }
+    async validade(token){
+        
+        try{
+
+            var result = await knex.select().where({token:token}).table("passwordTokens")
+            if(result.lengh > 0 ){
+
+                var tk = result[0]
+                if(tk.used){
+
+                    return {status:false,token:token.token,id:token.user_id,message:"token já utilizado"}
+
+                }else{
+
+                    return {status:false,message:"token valido"}
+                }
+                
+            }else{
+
+                return {status:false,error:"falha ao obter token"}
+            }
+
+        }catch(e){
+
+            console.log(error)
+            return {status:false,error:"erro ao obter token"}
+        }
+        
+    }
    
 }
 
