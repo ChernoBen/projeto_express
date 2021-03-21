@@ -1,6 +1,8 @@
-const { response } = require("express");
 const User = require("../models/User");
 const PasswordToken = require('../models/PasswordToken');
+const jwt = require('jsonwebtoken');
+const secret = '19216811';
+const bcrypt = require("bcrypt");
 
 class UserController {
 
@@ -126,6 +128,7 @@ class UserController {
 
             await User.changePassword(password,isTokenValid.user_id,isTokenValid.token)
             let result = await PasswordToken.setUsed(token)
+
             if ( !result.status ){
 
                 return res.status(400).json({error:"erro ao setar token"})
@@ -138,7 +141,31 @@ class UserController {
             return res.status(406).json({error:"token inválido"})
         }
 
+    }
 
+    async login(req,res){
+
+        var {email,password} = req.body
+        var user =  await User.findByEmail(email);
+
+        if (user != undefined){
+
+            var result = await bcrypt.compare(password,user.password);
+            
+            if (result){
+
+                var token = jwt.sign({email:user.email,role:user.role},secret)
+                return res.json({token:token})
+
+            } else {
+
+                return res.status(406).json({error:"senha incorreta"});
+            }
+            
+        } else{
+
+            return res.status(400).json({error:"Usuario nao encontrado"})
+        }
     }
 }
 

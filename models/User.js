@@ -25,7 +25,7 @@ class User {
 
     async findByEmail(email) {
 
-        let result = await knex.select(["idusers", "email", "role", "name"]).from("users").where({ email: email }).catch(err => {
+        let result = await knex.select(["idusers", "email","password", "role", "name"]).from("users").where({ email: email }).catch(err => {
 
             return undefined
         })
