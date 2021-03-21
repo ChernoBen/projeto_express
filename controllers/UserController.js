@@ -125,6 +125,12 @@ class UserController {
         if (isTokenValid.status){
 
             await User.changePassword(password,isTokenValid.user_id,isTokenValid.token)
+            let result = await PasswordToken.setUsed(token)
+            if ( !result.status ){
+
+                return res.status(400).json({error:"erro ao setar token"})
+            }
+            
             return res.json({message:"senha alterada"})
 
         } else {
